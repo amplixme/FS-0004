@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { errorHandler } from './middlewares/error.middleware.js';
+import authRoutes from './routes/auth.routes.js';
 
 dotenv.config()
 
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 3000;
 //Middlewares
 app.use(cors());
 app.use(express.json());
+
+//Rutas
+app.use('/api/auth', authRoutes);
 
 //Prueba inicial
 app.get('/', (req, res) => {
