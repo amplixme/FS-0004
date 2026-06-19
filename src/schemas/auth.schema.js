@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const registroSchema = z.object({
+export const registerSchema = z.object({
 	name: z.string({ required_error: 'El nombre es obligatorio' })
 	    .min(2, 'El nombre debe tener al menos 2 caracteres'),
 	email: z.string({ required_error: 'El email es obligatorio' })
