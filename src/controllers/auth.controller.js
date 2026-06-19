@@ -1,18 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { success } from '../utils/response.js';
+import { registerUser } from "../services/auth.service.js";
 
 const prisma = new PrismaClient();
 
-export async function registro(req, res, next){
-    try {
-        const { name, email, password } = req.body;
+export async function register(req, res, next) {
+  try {
+    await registerUser(req.body);
 
-        const user = await prisma.user.create({
-            data: { name, email, password },
-        });
-
-        return success(res, { id: user.id, name: user.name, email: user.email });
-    }catch(err){
-        next(err);
-    }
-}   
+    return res.status(201).json({
+      message: "Usuario registrado exitosamente", status: 201
+    });
+    
+  } catch (error) {
+    next(error);
+  }
+}
