@@ -1,45 +1,23 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../config/prisma.js';
+import { PrismaClient } from '@prisma/client';
+import { success } from '../utils/response.js';
+import { registerUser } from "../services/auth.service.js";
 
-export const register = async (req, res, next) => {
-    try {
-        const { email, password, name } = req.body;
+const prisma = new PrismaClient();
 
-        if (!email || !password || !name) {
-            return res.status(400).json({ message: 'Todos los campos son obligatorios' });
-        }
+export async function register(req, res, next) {
+  try {
+    await registerUser(req.body);
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email }
-        });
-
-        if (existingUser) {
-            return res.status(400).json({ message: 'El usuario ya existe' });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newUser = await prisma.user.create({
-            data: {
-                email,
-                name,
-                password: hashedPassword
-            }
-        });
-
-        res.status(201).json({
-            message: 'Usuario registrado exitosamente',
-            user: {
-                id: newUser.id,
-                email: newUser.email,
-                name: newUser.name
-            }
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+    return res.status(201).json({
+      message: "Usuario registrado exitosamente", status: 201
+    });
+    
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const login = async (req, res, next) => {
     try {

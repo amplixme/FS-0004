@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 //Middlewares
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth',authRoutes);
 
 //Rutas
 app.use('/api/auth', authRoutes);
