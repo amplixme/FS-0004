@@ -14,6 +14,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/auth',authRoutes);
 
+//Rutas
+app.use('/api/auth', authRoutes);
+
 //Prueba inicial
 app.get('/', (req, res) => {
     res.json({
