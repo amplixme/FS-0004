@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -23,9 +24,14 @@ export default function Register() {
   };
 
   const validate = () => {
-    if (!form.name) return "Name is required";
-    if (!form.email.includes("@")) return "Invalid email";
-    if (form.password.length < 8) return "Minimum 8 characters";
+    if (!form.name.trim()) return "Name is required";
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      return "Invalid email";
+
+    if (form.password.length < 8)
+      return "Minimum 8 characters";
+
     if (form.password !== form.confirmPassword)
       return "Passwords do not match";
 
@@ -48,11 +54,21 @@ export default function Register() {
         password: form.password,
       });
 
-      navigate("/login", {
-        state: { success: "Registration successful, please log in" },
+      await Swal.fire({
+        icon: "success",
+        title: "Successful registration",
+        timer: 1500,
+        showConfirmButton: false,
       });
+
+      navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration error");
+      const backendMessage =
+        err.response?.data?.error?.message ||
+        err.response?.data?.message ||
+        "Registration error";
+
+      setError(backendMessage);
     } finally {
       setLoading(false);
     }

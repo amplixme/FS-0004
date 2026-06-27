@@ -5,12 +5,12 @@ export function errorHandler(err, req, res, next) {
 
   //Manejo de errores de prisma
   if (err.code === "P2002") {
-    return error(res, "El email ya existe", 409);
+    return error(res, "The email address already exists", 409);
   }
 
   if (err.code === "P2025") {
-    return error(res, "Registro no encontrado", 404);
+    return error(res, "Record not found", 404);
   }
 
-  return error(res, err.message || "Error interno del servidor", 500);
+  return error(res, err.message || "Internal server error", 500);
 }
