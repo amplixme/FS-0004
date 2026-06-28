@@ -11,8 +11,8 @@ export async function registerUser({ name, email, password }) {
       name,
       email,
       password: hashedPassword,
+      // Rol de usuario por defecto al registrarse
       role: "USER",
-      
     },
   });
 }
