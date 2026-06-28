@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const {login} = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -28,8 +30,7 @@ export default function Login() {
     try {
       const { data } = await api.post("api/auth/login", form);
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      login(data.token, data.user);
 
       navigate("/");
     } catch (err) {
