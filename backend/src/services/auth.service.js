@@ -11,6 +11,8 @@ export async function registerUser({ name, email, password }) {
       name,
       email,
       password: hashedPassword,
+      role: "USER",
+      
     },
   });
 }
