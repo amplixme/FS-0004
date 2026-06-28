@@ -44,7 +44,8 @@ export const login = async (req, res, next) => {
         const payload = {
             userId: user.id,
             email: user.email,
-            name: user.name
+            name: user.name,
+            role: user.role,
         };
 
         const secret = process.env.JWT_SECRET;
@@ -59,7 +60,8 @@ export const login = async (req, res, next) => {
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name
+                name: user.name,
+                role: user.role
             }
         });
     } catch (error) {
