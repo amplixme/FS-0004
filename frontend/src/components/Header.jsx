@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const handleLogout = () => {
+    setOpen(false);
+    logout();
+  };
 
   return (
     <header>
@@ -15,19 +22,33 @@ function Header() {
             Home
           </Link>
 
-          <Link
-            to="/login"
-            className="rounded-md border border-blue-600 px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white"
-          >
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="font-medium">{user.name}</span>
+              <button
+                onClick={handleLogout}
+                className="rounded-md border border-blue-600 px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="rounded-md border border-blue-600 px-4 py-2 text-blue-600 hover:bg-blue-600 hover:text-white"
+              >
+                Login
+              </Link>
 
-          <Link
-            to="/register"
-            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Register
-          </Link>
+              <Link
+                to="/register"
+                className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </nav>
 
         <button className="md:hidden text-3xl" onClick={() => setOpen(!open)}>
@@ -44,12 +65,24 @@ function Header() {
           <Link to="/" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link to="/login" onClick={() => setOpen(false)}>
-            Login
-          </Link>
-          <Link to="/register" onClick={() => setOpen(false)}>
-            Register
-          </Link>
+
+          {isAuthenticated ? (
+            <>
+              <span className="font-medium">{user.name}</span>
+              <button onClick={handleLogout} className="text-left">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" onClick={() => setOpen(false)}>
+                Login
+              </Link>
+              <Link to="/register" onClick={() => setOpen(false)}>
+                Register
+              </Link>
+            </>
+          )}
         </nav>
       )}
     </header>
