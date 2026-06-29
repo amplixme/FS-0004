@@ -18,3 +18,38 @@ export async function createPost({ title, content, authorId }) {
     }
   });
 }
+
+export async function getPublishedPosts() {
+  return prisma.post.findMany({
+    where: {
+      published: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    include: {
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function getPostById(id) {
+  return prisma.post.findUnique({
+    where: {
+      id: parseInt(id)
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true
+        }
+      }
+    }
+  });
+}
