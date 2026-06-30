@@ -53,3 +53,27 @@ export async function getPostById(id) {
     }
   });
 }
+
+export async function updatePost(id, data) {
+  return prisma.post.update({
+    where: {
+      id: parseInt(id)
+    },
+    data,
+    include: {
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function deletePost(id) {
+  return prisma.post.delete({
+    where: {
+      id: parseInt(id)
+    }
+  });
+}
