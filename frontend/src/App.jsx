@@ -6,6 +6,7 @@ import PostDetail from "./pages/PostDetail";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import CreatePost from "./pages/CreatePost"; 
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
             <Route path="/posts/:id" element={<PostDetail />} />
 
             <Route element={<ProtectedRoute />}>
-              {/* Rutas privadas futuras, ej: <Route path="/crear" element={<CreatePost />} /> */}
+              <Route path="/crear" element={<CreatePost />} />
             </Route>
           </Route>
         </Routes>
