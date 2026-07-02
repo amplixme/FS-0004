@@ -24,6 +24,12 @@ function Header() {
 
           {isAuthenticated ? (
             <>
+              <Link
+                to="/crear"
+                className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Crear Post
+              </Link>
               <span className="font-medium">{user.name}</span>
               <button
                 onClick={handleLogout}
@@ -68,6 +74,9 @@ function Header() {
 
           {isAuthenticated ? (
             <>
+              <Link to="/crear" onClick={() => setOpen(false)}>
+                Crear Post
+              </Link>
               <span className="font-medium">{user.name}</span>
               <button onClick={handleLogout} className="text-left">
                 Logout

@@ -8,6 +8,7 @@ export function AuthProvider({children}){
 
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     //Al iniciar, se restaura la sesión desde localStorage
     useEffect(() => {
@@ -18,6 +19,7 @@ export function AuthProvider({children}){
             setToken(storedToken);
             setUser(JSON.parse(storedUser));
         }
+        setLoading(false);
     }, []);
 
     const login = (newToken,userData) => {
@@ -42,7 +44,7 @@ export function AuthProvider({children}){
 
     return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, isAuthenticated }}
+      value={{ user, token, login, logout, isAuthenticated, loading }}
     >
       {children}
     </AuthContext.Provider>
