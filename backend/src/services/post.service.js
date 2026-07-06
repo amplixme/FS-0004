@@ -2,12 +2,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function createPost({ title, content, authorId }) {
+export async function createPost({ title, content, authorId, coverImage }) {
   return prisma.post.create({
     data: {
       title,
       content,
-      authorId
+      authorId,
+      coverImage
     },
     include: {
       author: {
