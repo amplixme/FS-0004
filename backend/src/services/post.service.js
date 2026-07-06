@@ -14,16 +14,27 @@ export async function createPost({ title, content, authorId }) {
         select: {
           name: true
         }
-      }
+      },
+      categories: true
     }
   });
 }
 
-export async function getPublishedPosts() {
+export async function getPublishedPosts({ category } = {}) {
+  const where = {
+    published: true
+  };
+
+  if (category) {
+    where.categories = {
+      some: {
+        slug: category
+      }
+    };
+  }
+
   return prisma.post.findMany({
-    where: {
-      published: true
-    },
+    where,
     orderBy: {
       createdAt: 'desc'
     },
@@ -32,7 +43,8 @@ export async function getPublishedPosts() {
         select: {
           name: true
         }
-      }
+      },
+      categories: true
     }
   });
 }
@@ -49,7 +61,8 @@ export async function getPostById(id) {
           name: true,
           email: true
         }
-      }
+      },
+      categories: true
     }
   });
 }
@@ -65,7 +78,8 @@ export async function updatePost(id, data) {
         select: {
           name: true
         }
-      }
+      },
+      categories: true
     }
   });
 }
