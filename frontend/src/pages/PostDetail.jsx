@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 function PostDetail() {
   const { id } = useParams();
   const { user } = useAuth();
-
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -64,7 +63,6 @@ function PostDetail() {
   return (
     <div className="min-h-screen bg-white antialiased">
       <div className="max-w-3xl mx-auto px-6 py-12 sm:py-16">
-
         <Link
           to="/"
           className="inline-flex items-center text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors mb-8 text-left"
@@ -80,28 +78,29 @@ function PostDetail() {
           <div className="text-sm">
             <p className="text-gray-500 flex items-center gap-2 mt-0.5">
               <span>{formattedDate}</span>
-              <span className="text-gray-300">•</span>
             </p>
           </div>
         </div>
 
         <article className="mt-10 prose prose-neutral prose-lg max-w-none">
-          <div className="whitespace-pre-wrap text-[18px] sm:text-[20px] leading-[1.8] text-gray-800 font-normal tracking-normal space-y-6 text-left">
+          <div className="whitespace-pre-wrap text-1xl sm:text-2xl leading-[1.8] text-gray-800 font-normal tracking-normal space-y-6 text-left ">
             {post.content}
           </div>
         </article>
 
         {isAuthor && (
           <div className="mt-14 pt-6 border-t border-gray-100 flex gap-3 justify-end">
-            <button className="px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 bg-gray-300 hover:bg-gray-100 transition-colors">
+            <Link
+              to={`/posts/${post.id}/edit`}
+              className="px-8 py-3.5 rounded-full text-m font-medium text-gray-600 bg-gray-300 hover:bg-gray-100 transition-colors"
+            >
               Editar
-            </button>
-            <button className="px-5 py-2.5 rounded-full text-sm font-medium text-white bg-red-600 hover:bg-red-500 transition-colors">
+            </Link>
+            <button className="px-8 py-3.5 rounded-full text-m font-medium text-white bg-red-600 hover:bg-red-500 transition-colors">
               Eliminar
             </button>
           </div>
         )}
-
       </div>
     </div>
   );
