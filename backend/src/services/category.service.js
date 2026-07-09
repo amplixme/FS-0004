@@ -34,7 +34,7 @@ export async function updateCategory(id, data) {
   }
   return prisma.category.update({
     where: {
-      id: parseInt(id)
+      id
     },
     data: updateData
   });
@@ -43,7 +43,7 @@ export async function updateCategory(id, data) {
 export async function getCategoryById(id) {
   return prisma.category.findUnique({
     where: {
-      id: parseInt(id)
+      id
     },
     include: {
       _count: {
@@ -56,7 +56,7 @@ export async function getCategoryById(id) {
 export async function deleteCategory(id) {
   return prisma.category.delete({
     where: {
-      id: parseInt(id)
+      id
     }
   });
 }
