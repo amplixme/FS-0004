@@ -1,64 +1,64 @@
 import { useEffect, useState } from "react";
-import { getAll} from "../services/post.service";
+import { getAll } from "../services/post.service";
 import PostCard from "../components/PostCard";
+import Spinner from "../components/common/Spinner";
+import ErrorMessage from "../components/common/ErrorMessage";
+import EmptyState from "../components/common/EmptyState";
 
-function Home(){
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+function Home() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchPosts = async () =>{
-            try{
-                setLoading(true);
-                setError(null);
-                const data = await getAll();
-                setPosts(data);
-            }catch(err){
-                setError(err.message);
-            }finally{
-                setLoading(false);
-            }
-        };
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getAll();
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-        fetchPosts();
-    },[]);
-
-    if(loading){
-        return(
-            <div className="flex justify-center py-20">
-                <div
-                    className="h-8 w-8 animate-spin rounded-full border-2 border-neutral-700 border-t-neutral-200"
-                    role= "status"
-                    aria-label= "Cargando posts"
-                />    
-            </div>
-        );
+      setPosts(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if(error){
-        return(
-            <div className="py-20 text-center text-sm text-red-400">
-                No se pudieron cargar los posts. {error}
-            </div>
-        );
-    }
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-    if (posts.length === 0){
-        return(
-            <div className="py-20 text-center text-sm text-neutral-500">
-                No hay publicaciones todavía.
-            </div>
-        );
-    }
+  if (loading) {
+    return <Spinner />;
+  }
 
-    return(
-        <div className="grid grid-cols-1 gap-5 p-6 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-            ))}
-        </div>
+  if (error) {
+    return (
+      <ErrorMessage
+        message={`No se pudieron cargar los posts. ${error}`}
+        onRetry={fetchPosts}
+      />
     );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <EmptyState
+        message="No hay posts todavía."
+        actionText="Crear Post"
+        actionLink="/crear"
+      />
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-5 p-6 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
+    </div>
+  );
 }
 
-export default Home
+export default Home;
