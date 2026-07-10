@@ -34,6 +34,7 @@ model Post {
   title      String
   content    String
   published  Boolean   @default(false)
+  coverImage String?
 
   authorId   Int
   author     User      @relation(fields: [authorId], references: [id])
