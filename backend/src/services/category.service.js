@@ -2,6 +2,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+const slugify = (text) => text.toString().toLowerCase()
+  .replace(/\s+/g, '-')
+  .replace(/[^\w\-]+/g, '')
+  .replace(/\-\-+/g, '-')
+  .replace(/^-+/, '')
+  .replace(/-+$/, '');
+
 export async function getAllCategories() {
   return prisma.category.findMany({
     orderBy: {
@@ -11,17 +18,25 @@ export async function getAllCategories() {
 }
 
 export async function createCategory(data) {
+  const slug = data.slug || slugify(data.name);
   return prisma.category.create({
-    data
+    data: {
+      ...data,
+      slug
+    }
   });
 }
 
 export async function updateCategory(id, data) {
+  const updateData = { ...data };
+  if (data.name && !data.slug) {
+    updateData.slug = slugify(data.name);
+  }
   return prisma.category.update({
     where: {
       id
     },
-    data
+    data: updateData
   });
 }
 

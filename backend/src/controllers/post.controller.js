@@ -19,7 +19,8 @@ export async function create(req, res, next) {
 
 export async function list(req, res, next) {
   try {
-    const posts = await getPublishedPosts();
+    const { category } = req.query;
+    const posts = await getPublishedPosts({ category });
     return res.status(200).json(posts);
   } catch (error) {
     next(error);
