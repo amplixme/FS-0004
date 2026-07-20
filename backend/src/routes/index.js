@@ -10,7 +10,7 @@ const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/posts', postRoutes);
-router.use('/posts', commentRoutes);
+router.use('/comments', commentRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/categories', categoryRoutes);
 

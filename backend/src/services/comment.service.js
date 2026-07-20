@@ -47,3 +47,42 @@ export async function getCommentsByPost(postId) {
     }
   });
 }
+
+export async function getCommentById(id) {
+  return prisma.comment.findUnique({
+    where: {
+      id: parseInt(id)
+    },
+    include: {
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function updateComment(id, data) {
+  return prisma.comment.update({
+    where: {
+      id: parseInt(id)
+    },
+    data,
+    include: {
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+  });
+}
+
+export async function deleteComment(id) {
+  return prisma.comment.delete({
+    where: {
+      id: parseInt(id)
+    }
+  });
+}
