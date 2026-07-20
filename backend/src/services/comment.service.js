@@ -29,3 +29,21 @@ export async function createComment({ content, postId, authorId }) {
     }
   });
 }
+
+export async function getCommentsByPost(postId) {
+  return prisma.comment.findMany({
+    where: {
+      postId: parseInt(postId)
+    },
+    orderBy: {
+      createdAt: "desc"
+    },
+    include: {
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+  });
+}
