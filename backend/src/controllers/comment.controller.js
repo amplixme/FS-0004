@@ -1,6 +1,6 @@
-import {
+import { 
   createComment,
-  getCommentsByPost
+  getCommentsByPost, getCommentById, updateComment, deleteComment
 } from "../services/comment.service.js";
 
 export async function addComment(req, res) {
@@ -50,5 +50,78 @@ export async function getComments(req, res) {
     return res.status(500).json({
       message: "Error interno del servidor"
     });
+  }
+}
+
+export async function update(req, res, next) {
+  try {
+
+    const { id } = req.params;
+
+    const comment = await getCommentById(id);
+
+    if (!comment) {
+      return res.status(404).json({
+        error: {
+          message: "Comentario no encontrado"
+        }
+      });
+    }
+
+    if (comment.authorId !== req.user.id) {
+      return res.status(403).json({
+        error: {
+          message: "No tienes permiso para modificar este comentario"
+        }
+      });
+    }
+
+    const { content } = req.body;
+
+    const updated = await updateComment(id, {
+      content
+    });
+
+    return res.status(200).json(updated);
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function remove(req, res, next) {
+  try {
+
+    const { id } = req.params;
+
+    const comment = await getCommentById(id);
+
+    if (!comment) {
+      return res.status(404).json({
+        error: {
+          message: "Comentario no encontrado"
+        }
+      });
+    }
+
+    if (
+      comment.authorId !== req.user.id &&
+      req.user.role !== "ADMIN"
+    ) {
+      return res.status(403).json({
+        error: {
+          message: "No tienes permiso para eliminar este comentario"
+        }
+      });
+    }
+
+    await deleteComment(id);
+
+    return res.status(200).json({
+      message: "Comentario eliminado exitosamente"
+    });
+
+  } catch (error) {
+    next(error);
   }
 }
