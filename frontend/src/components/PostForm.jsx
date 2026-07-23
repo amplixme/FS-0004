@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { categoryAPI } from "../services/category.service";
 
 function PostForm({
   initialData = {},
@@ -11,6 +12,23 @@ function PostForm({
   const [content, setContent] = useState(initialData.content || "");
   const [published, setPublished] = useState(initialData.published || false);
   const [error, setError] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(
+    initialData.categories ? initialData.categories.map((c) => c.id) : []
+  );
+
+  useEffect(() => {
+    categoryAPI.getAll().then(setCategories).catch(console.error);
+  }, []);
+
+  const handleCategoryChange = (catId) => {
+    setSelectedCategories((prev) =>
+      prev.includes(catId)
+        ? prev.filter((id) => id !== catId)
+        : [...prev, catId]
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +47,7 @@ function PostForm({
       title,
       content,
       published,
+      categoryIds: selectedCategories,
     });
   };
 
@@ -47,6 +66,33 @@ function PostForm({
       />
 
       <div className="border-t border-gray-100 my-6"></div>
+      
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Categorías
+        </label>
+        <div className="flex flex-wrap gap-3">
+          {categories.map((cat) => (
+            <label
+              key={cat.id}
+              className={`cursor-pointer px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
+                selectedCategories.includes(cat.id)
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                className="hidden"
+                checked={selectedCategories.includes(cat.id)}
+                onChange={() => handleCategoryChange(cat.id)}
+              />
+              {cat.name}
+            </label>
+          ))}
+        </div>
+      </div>
+
       <textarea
         placeholder="Escribe el contenido del post aquí..."
         value={content}

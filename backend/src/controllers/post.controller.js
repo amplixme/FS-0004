@@ -2,14 +2,15 @@ import { createPost, getPublishedPosts, getPostById, updatePost, deletePost } fr
 
 export async function create(req, res, next) {
   try {
-    const { title, content, coverImage } = req.body;
+    const { title, content, coverImage, categoryIds } = req.body;
     const authorId = req.user.id;
 
     const post = await createPost({
       title,
       content,
       authorId,
-      coverImage
+      coverImage,
+      categoryIds
     });
 
     return res.status(201).json(post);
@@ -56,8 +57,8 @@ export async function update(req, res, next) {
       return res.status(403).json({ error: { message: 'No tienes permiso para modificar este post' } });
     }
 
-    const { title, content, published, coverImage } = req.body;
-    const updated = await updatePost(id, { title, content, published, coverImage });
+    const { title, content, published, coverImage, categoryIds } = req.body;
+    const updated = await updatePost(id, { title, content, published, coverImage, categoryIds });
 
     return res.status(200).json(updated);
   } catch (error) {
