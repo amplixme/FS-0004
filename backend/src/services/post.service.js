@@ -2,14 +2,22 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function createPost({ title, content, authorId, coverImage }) {
+export async function createPost({ title, content, authorId, coverImage, categoryIds = [] }) {
+  const data = {
+    title,
+    content,
+    authorId,
+    coverImage
+  };
+
+  if (categoryIds.length > 0) {
+    data.categories = {
+      connect: categoryIds.map(id => ({ id }))
+    };
+  }
+
   return prisma.post.create({
-    data: {
-      title,
-      content,
-      authorId,
-      coverImage
-    },
+    data,
     include: {
       author: {
         select: {
@@ -69,11 +77,20 @@ export async function getPostById(id) {
 }
 
 export async function updatePost(id, data) {
+  const updateData = { ...data };
+  
+  if (updateData.categoryIds) {
+    updateData.categories = {
+      set: updateData.categoryIds.map(catId => ({ id: catId }))
+    };
+    delete updateData.categoryIds;
+  }
+
   return prisma.post.update({
     where: {
       id: parseInt(id)
     },
-    data,
+    data: updateData,
     include: {
       author: {
         select: {
