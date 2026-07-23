@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAll } from "../services/post.service";
 import { categoryAPI } from "../services/category.service";
 import PostCard from "../components/PostCard";
@@ -7,11 +8,18 @@ import ErrorMessage from "../components/common/ErrorMessage";
 import EmptyState from "../components/common/EmptyState";
 
 function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = searchParams.get("category") || "";
+  
+  const setActiveCategory = (slug) => {
+    if (slug) setSearchParams({ category: slug });
+    else setSearchParams({});
+  };
+
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeCategory, setActiveCategory] = useState('');
 
   const fetchData = async () => {
     try {
