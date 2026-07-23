@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ImageUpload from "./common/ImageUpload";
 
 function PostForm({
   initialData = {},
@@ -9,6 +10,7 @@ function PostForm({
 }) {
   const [title, setTitle] = useState(initialData.title || "");
   const [content, setContent] = useState(initialData.content || "");
+  const [coverImage, setCoverImage] = useState(initialData.coverImage || "");
   const [published, setPublished] = useState(initialData.published || false);
   const [error, setError] = useState("");
 
@@ -28,6 +30,7 @@ function PostForm({
     await onSubmit({
       title,
       content,
+      coverImage,
       published,
     });
   };
@@ -37,6 +40,17 @@ function PostForm({
       {error && (
         <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>
       )}
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Imagen de Portada
+        </label>
+        <ImageUpload 
+          value={coverImage} 
+          onChange={setCoverImage} 
+          disabled={loading}
+        />
+      </div>
 
       <div className="border-t border-gray-100 my-6"></div>
       <input
