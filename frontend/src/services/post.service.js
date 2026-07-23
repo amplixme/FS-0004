@@ -1,8 +1,9 @@
 import api from '../services/api.js';
 
-export const getAll = async () => {
+export const getAll = async (category = '') => {
   try {
-    const response = await api.get('/posts');
+    const url = category ? `/posts?category=${category}` : '/posts';
+    const response = await api.get(url);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al obtener los posts');
