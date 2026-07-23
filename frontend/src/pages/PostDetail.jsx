@@ -102,6 +102,16 @@ function PostDetail() {
             ← Volver a inicio
           </Link>
 
+          {post.coverImage && (
+            <div className="mb-8 w-full rounded-2xl overflow-hidden aspect-video shadow-md">
+              <img 
+                src={post.coverImage} 
+                alt={post.title} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight leading-[1.15] text-left">
             {post.title}
           </h1>
