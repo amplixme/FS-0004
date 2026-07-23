@@ -103,7 +103,7 @@ function PostDetail() {
           </Link>
 
           {post.coverImage && (
-            <div className="mb-8 w-full rounded-2xl overflow-hidden aspect-[16/9] shadow-md">
+            <div className="mb-8 w-full rounded-2xl overflow-hidden aspect-video shadow-md">
               <img 
                 src={post.coverImage} 
                 alt={post.title} 

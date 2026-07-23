@@ -21,9 +21,9 @@ function PostCard({ post }) {
   return (
     <Link
       to={`/posts/${id}`}
-      className="block rounded-lg border border-neutral-800 bg-neutral-900 overflow-hidden transition-colors hover:border-neutral-600 flex flex-col h-full"
+      className="rounded-lg border border-neutral-800 bg-neutral-900 overflow-hidden transition-colors hover:border-neutral-600 flex flex-col h-full"
     >
-      <div className="aspect-[16/9] w-full bg-gradient-to-br from-neutral-800 to-neutral-700 relative overflow-hidden shrink-0">
+      <div className="aspect-video w-full bg-linear-to-br from-neutral-800 to-neutral-700 relative overflow-hidden shrink-0">
         {coverImage ? (
           <img 
             src={coverImage} 
