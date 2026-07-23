@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PostDetail from "./pages/PostDetail";
+import Categories from "./pages/Categories";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -23,6 +24,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/crear" element={<CreatePost />} />
               <Route path="/posts/:id/edit" element={<EditPost />} />
+              <Route path="/categorias" element={<Categories />} />
             </Route>
           </Route>
         </Routes>
